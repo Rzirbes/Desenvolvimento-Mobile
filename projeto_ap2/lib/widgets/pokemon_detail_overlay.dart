@@ -64,11 +64,60 @@ class PokemonDetailOverlay extends StatelessWidget {
                         const SizedBox(height: 12),
                         TextButton.icon(
                           onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) =>
+                            Navigator.of(context).push(
+                              PageRouteBuilder(
+                                transitionDuration: const Duration(
+                                  milliseconds: 700,
+                                ),
+                                pageBuilder: (_, animation, __) =>
                                     PokemonDetailPage(pokemon: pokemon),
+                                transitionsBuilder: (_, animation, __, child) {
+                                  final rotate = Tween(begin: 1.0, end: 0.0)
+                                      .animate(
+                                        CurvedAnimation(
+                                          parent: animation,
+                                          curve: Curves.easeInOut,
+                                        ),
+                                      );
+
+                                  final scale =
+                                      Tween<double>(
+                                        begin: 0.8,
+                                        end: 1.0,
+                                      ).animate(
+                                        CurvedAnimation(
+                                          parent: animation,
+                                          curve: Curves.decelerate,
+                                        ),
+                                      );
+
+                                  final opacity = Tween<double>(
+                                    begin: 0.0,
+                                    end: 1.0,
+                                  ).animate(animation);
+
+                                  return AnimatedBuilder(
+                                    animation: animation,
+                                    builder: (context, _) {
+                                      final angle = (2 - rotate.value) * 3.14;
+                                      return Opacity(
+                                        opacity: opacity.value,
+                                        child: Transform(
+                                          alignment: Alignment.center,
+                                          transform: Matrix4.identity()
+                                            ..rotateY(angle)
+                                            ..scaleByDouble(
+                                              scale.value,
+                                              scale.value,
+                                              scale.value,
+                                              scale.value,
+                                            ),
+                                          child: child,
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
                               ),
                             );
                           },

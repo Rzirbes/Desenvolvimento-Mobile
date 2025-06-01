@@ -62,23 +62,48 @@ class _HomeScreenState extends State<HomeScreen> {
           SafeArea(
             child: Column(
               children: [
-                if (selectedPokemon != null)
-                  PokemonDetailOverlay(
-                    pokemon: selectedPokemon!,
-                    onClose: () => setState(() => selectedPokemon = null),
-                  )
-                else
-                  const Padding(
-                    padding: EdgeInsets.all(16),
-                    child: Text(
-                      'Pokédex',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 500),
+                  switchInCurve: Curves.easeOutBack,
+                  switchOutCurve: Curves.easeIn,
+                  transitionBuilder: (child, animation) {
+                    final slide = Tween<Offset>(
+                      begin: const Offset(0, 0.2),
+                      end: Offset.zero,
+                    ).animate(animation);
+
+                    final scale = Tween<double>(
+                      begin: 0.95,
+                      end: 1.0,
+                    ).animate(animation);
+
+                    return FadeTransition(
+                      opacity: animation,
+                      child: SlideTransition(
+                        position: slide,
+                        child: ScaleTransition(scale: scale, child: child),
                       ),
-                    ),
-                  ),
+                    );
+                  },
+                  child: selectedPokemon != null
+                      ? PokemonDetailOverlay(
+                          key: ValueKey(selectedPokemon!.name),
+                          pokemon: selectedPokemon!,
+                          onClose: () => setState(() => selectedPokemon = null),
+                        )
+                      : const Padding(
+                          padding: EdgeInsets.all(16),
+                          child: Text(
+                            'Pokédex',
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                ),
+
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: SearchField(
