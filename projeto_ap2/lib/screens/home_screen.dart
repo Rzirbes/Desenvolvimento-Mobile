@@ -41,11 +41,15 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> loadPokemons() async {
-    final data = await PokeApiService.fetchPokemons();
-    setState(() {
-      pokemons = data;
-      filteredPokemons = data;
-    });
+    try {
+      final data = await PokeApiService.fetchPokemons();
+      setState(() {
+        pokemons = data;
+        filteredPokemons = data;
+      });
+    } catch (e) {
+      debugPrint('Erro ao carregar pokémons: $e');
+    }
   }
 
   @override

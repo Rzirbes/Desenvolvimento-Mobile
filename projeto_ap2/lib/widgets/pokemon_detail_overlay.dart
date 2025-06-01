@@ -29,8 +29,8 @@ class PokemonDetailOverlay extends StatelessWidget {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                typeColor.withOpacity(0.85),
-                Colors.black.withOpacity(0.9),
+                typeColor.withAlpha((0.85 * 255).toInt()),
+                Colors.black.withAlpha((0.9 * 255).toInt()),
               ],
             ),
           ),

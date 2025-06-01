@@ -23,4 +23,34 @@ class PokeApiService {
 
     return pokemons;
   }
+
+  static Future<Map<String, String>> fetchAbilityDescriptions(
+    List abilities,
+  ) async {
+    final Map<String, String> descriptions = {};
+
+    for (var ability in abilities) {
+      final url = ability['ability']['url'];
+      final response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        final entries = data['effect_entries'] as List;
+
+        final entry = entries.firstWhere(
+          (e) => e['language']['name'] == 'pt',
+          orElse: () => entries.firstWhere(
+            (e) => e['language']['name'] == 'en',
+            orElse: () => null,
+          ),
+        );
+
+        if (entry != null) {
+          descriptions[ability['ability']['name']] = entry['short_effect'];
+        }
+      }
+    }
+
+    return descriptions;
+  }
 }

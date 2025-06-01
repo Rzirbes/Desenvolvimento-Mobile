@@ -63,7 +63,7 @@ class _TypeEffectivenessState extends State<TypeEffectiveness> {
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
-            color: Colors.white,
+            color: Colors.black,
           ),
         ),
         const SizedBox(height: 12),
@@ -71,13 +71,13 @@ class _TypeEffectivenessState extends State<TypeEffectiveness> {
           Icons.arrow_upward,
           'Forte contra',
           strongAgainst,
-          Colors.greenAccent,
+          Colors.green,
         ),
         _buildRow(
           Icons.arrow_downward,
           'Fraco contra',
           weakAgainst,
-          Colors.redAccent,
+          Colors.red,
         ),
         _buildRow(Icons.block, 'Sem efeito em', noEffect, Colors.grey),
       ],
@@ -113,16 +113,27 @@ class _TypeEffectivenessState extends State<TypeEffectiveness> {
           ),
           const SizedBox(height: 6),
           Wrap(
-            spacing: 8,
+            spacing: 12,
             runSpacing: 6,
             children: types
                 .map(
-                  (t) => Chip(
-                    label: Text(t, style: const TextStyle(color: Colors.white)),
-                    backgroundColor: color..withAlpha((0.2 * 255).toInt()),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
+                  (t) => Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text(
+                        '•',
+                        style: TextStyle(fontSize: 14, color: Colors.black87),
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        t,
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: color,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
                   ),
                 )
                 .toList(),
