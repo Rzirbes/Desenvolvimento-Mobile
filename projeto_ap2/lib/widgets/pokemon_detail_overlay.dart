@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projeto_ap2/screens/detail_screen.dart';
 import 'package:projeto_ap2/utils/pokemon_type_color.dart';
 import '../../models/pokemon_model.dart';
 
@@ -62,7 +63,15 @@ class PokemonDetailOverlay extends StatelessWidget {
                         ),
                         const SizedBox(height: 12),
                         TextButton.icon(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) =>
+                                    PokemonDetailPage(pokemon: pokemon),
+                              ),
+                            );
+                          },
                           icon: const Icon(
                             Icons.info_outline,
                             color: Colors.white,
@@ -74,7 +83,9 @@ class PokemonDetailOverlay extends StatelessWidget {
                           ),
                           style: TextButton.styleFrom(
                             foregroundColor: Colors.white,
-                            backgroundColor: Colors.white.withOpacity(0.2),
+                            backgroundColor: Colors.white.withAlpha(
+                              (0.2 * 255).toInt(),
+                            ),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
