@@ -1,16 +1,53 @@
-# projeto_ap2
 
-A new Flutter project.
+# 📱 Pokédex Flutter
 
-## Getting Started
+Projeto desenvolvido como parte dos meus estudos em **Desenvolvimento Mobile**, utilizando **Flutter** e consumindo a **PokéAPI**.
 
-This project is a starting point for a Flutter application.
+## ✨ Funcionalidades
 
-A few resources to get you started if this is your first Flutter project:
+- ✅ Listagem de Pokémons com nome, tipo, altura e peso
+- ✅ Busca por nome em tempo real
+- ✅ Tela de detalhes com habilidades e efetividades por tipo
+- ✅ Consumo de API REST (PokéAPI)
+- ✅ Interface dark theme com destaques por tipo de Pokémon
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## 🛠️ Tecnologias utilizadas
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Flutter
+- Dart
+- HTTP Package
+- PokéAPI
+
+## 🚀 Como rodar localmente
+
+```bash
+# Clone o repositório
+git clone https://github.com/Rzirbes/Desenvolvimento-Mobile.git
+
+# Acesse o diretório do projeto
+cd Desenvolvimento-Mobile/projeto_ap2
+
+# Instale as dependências
+flutter pub get
+
+# Rode o projeto
+flutter run -d chrome
+```
+
+
+## Screenshots
+
+![image](https://github.com/user-attachments/assets/3387c065-c82f-49b8-8c90-ed310f4cb4ec)
+![image](https://github.com/user-attachments/assets/e697b50c-a565-496e-b714-1edec24ad018)
+![image](https://github.com/user-attachments/assets/ff2af970-37e7-45d8-b1b9-2a605da8f880)
+
+
+## ✅ Melhorias futuras (backlog pessoal)
+
+- Animações de carregamento
+- Feedback visual para erros de API
+- Paginação de resultados
+
+---
+
+Feito por [Rômulo Zirbes](https://github.com/Rzirbes) 🚀
