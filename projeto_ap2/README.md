@@ -1,9 +1,9 @@
 
-# 📱 Pokédex Flutter
+# Pokédex Flutter
 
 Projeto desenvolvido como parte dos meus estudos em **Desenvolvimento Mobile**, utilizando **Flutter** e consumindo a **PokéAPI**.
 
-## ✨ Funcionalidades
+## Funcionalidades
 
 - ✅ Listagem de Pokémons com nome, tipo, altura e peso
 - ✅ Busca por nome em tempo real
@@ -11,14 +11,14 @@ Projeto desenvolvido como parte dos meus estudos em **Desenvolvimento Mobile**, 
 - ✅ Consumo de API REST (PokéAPI)
 - ✅ Interface dark theme com destaques por tipo de Pokémon
 
-## 🛠️ Tecnologias utilizadas
+## Tecnologias utilizadas
 
 - Flutter
 - Dart
 - HTTP Package
 - PokéAPI
 
-## 🚀 Como rodar localmente
+## Como rodar localmente
 
 ```bash
 # Clone o repositório
@@ -42,7 +42,7 @@ flutter run -d chrome
 ![image](https://github.com/user-attachments/assets/ff2af970-37e7-45d8-b1b9-2a605da8f880)
 
 
-## ✅ Melhorias futuras (backlog pessoal)
+## Melhorias futuras (backlog pessoal)
 
 - Animações de carregamento
 - Feedback visual para erros de API
