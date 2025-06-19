@@ -5,8 +5,12 @@ import '../models/pokemon_model.dart';
 class PokeApiService {
   static const String baseUrl = 'https://pokeapi.co/api/v2/pokemon?limit=100';
 
-  static Future<List<Pokemon>> fetchPokemons() async {
-    final response = await http.get(Uri.parse(baseUrl));
+  static Future<List<Pokemon>> fetchPokemons({
+    int offset = 0,
+    int limit = 20,
+  }) async {
+    final url = 'https://pokeapi.co/api/v2/pokemon?limit=$limit&offset=$offset';
+    final response = await http.get(Uri.parse(url));
 
     if (response.statusCode != 200) return [];
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../models/pokemon_model.dart';
-import '../services/poke_api_service.dart';
+import 'package:provider/provider.dart';
+import '../providers/pokemon_provider.dart';
 import '../widgets/pokemon_card.dart';
 import '../widgets/search_field.dart';
 import '../widgets/pokemon_detail_overlay.dart';
@@ -14,15 +14,21 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _searchController = TextEditingController();
-  List<Pokemon> pokemons = [];
-  List<Pokemon> filteredPokemons = [];
-  Pokemon? selectedPokemon;
 
   @override
   void initState() {
     super.initState();
-    loadPokemons();
-    _searchController.addListener(_onSearchChanged);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<PokemonProvider>(context, listen: false).loadPokemons();
+    });
+
+    _searchController.addListener(() {
+      Provider.of<PokemonProvider>(
+        context,
+        listen: false, 
+      ).searchPokemons(_searchController.text);
+    });
   }
 
   @override
@@ -31,29 +37,10 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
-  void _onSearchChanged() {
-    final query = _searchController.text.toLowerCase();
-    setState(() {
-      filteredPokemons = pokemons
-          .where((p) => p.name.toLowerCase().contains(query))
-          .toList();
-    });
-  }
-
-  Future<void> loadPokemons() async {
-    try {
-      final data = await PokeApiService.fetchPokemons();
-      setState(() {
-        pokemons = data;
-        filteredPokemons = data;
-      });
-    } catch (e) {
-      debugPrint('Erro ao carregar pokémons: $e');
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<PokemonProvider>(context);
+
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,
@@ -64,32 +51,11 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 AnimatedSwitcher(
                   duration: const Duration(milliseconds: 500),
-                  switchInCurve: Curves.easeOutBack,
-                  switchOutCurve: Curves.easeIn,
-                  transitionBuilder: (child, animation) {
-                    final slide = Tween<Offset>(
-                      begin: const Offset(0, 0.2),
-                      end: Offset.zero,
-                    ).animate(animation);
-
-                    final scale = Tween<double>(
-                      begin: 0.95,
-                      end: 1.0,
-                    ).animate(animation);
-
-                    return FadeTransition(
-                      opacity: animation,
-                      child: SlideTransition(
-                        position: slide,
-                        child: ScaleTransition(scale: scale, child: child),
-                      ),
-                    );
-                  },
-                  child: selectedPokemon != null
+                  child: provider.selectedPokemon != null
                       ? PokemonDetailOverlay(
-                          key: ValueKey(selectedPokemon!.name),
-                          pokemon: selectedPokemon!,
-                          onClose: () => setState(() => selectedPokemon = null),
+                          key: ValueKey(provider.selectedPokemon!.name),
+                          pokemon: provider.selectedPokemon!,
+                          onClose: provider.clearSelection,
                         )
                       : const Padding(
                           padding: EdgeInsets.all(16),
@@ -103,33 +69,46 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                 ),
-
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: SearchField(
                     controller: _searchController,
-                    onChanged: (_) => _onSearchChanged(),
+                    onChanged: (_) {},
                     hintText: 'Buscar Pokémon...',
                   ),
                 ),
                 const SizedBox(height: 8),
                 Expanded(
-                  child: GridView.count(
-                    crossAxisCount: 2,
-                    childAspectRatio: 0.75,
-                    padding: const EdgeInsets.all(8),
-                    children: filteredPokemons
-                        .map(
+                  child: NotificationListener<ScrollNotification>(
+                    onNotification: (scrollInfo) {
+                      if (scrollInfo.metrics.pixels >=
+                          scrollInfo.metrics.maxScrollExtent - 200) {
+                        if (provider.hasMore && !provider.isLoadingMore) {
+                          provider.loadMorePokemons();
+                        }
+                      }
+                      return false;
+                    },
+                    child: GridView.count(
+                      crossAxisCount: 2,
+                      childAspectRatio: 0.75,
+                      padding: const EdgeInsets.all(8),
+                      children: [
+                        ...provider.filteredPokemons.map(
                           (p) => PokemonCard(
                             pokemon: p,
-                            onTap: () {
-                              setState(() {
-                                selectedPokemon = p;
-                              });
-                            },
+                            onTap: () => provider.selectPokemon(p),
                           ),
-                        )
-                        .toList(),
+                        ),
+                        if (provider.isLoadingMore)
+                          const Center(
+                            child: Padding(
+                              padding: EdgeInsets.all(16),
+                              child: CircularProgressIndicator(),
+                            ),
+                          ),
+                      ],
+                    ),
                   ),
                 ),
               ],

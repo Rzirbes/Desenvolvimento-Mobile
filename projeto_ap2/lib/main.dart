@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
-import 'screens/home_screen.dart'; // certifique-se de que o caminho está certo
+import 'package:provider/provider.dart';
+import 'providers/pokemon_provider.dart';
+import 'screens/home_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [ChangeNotifierProvider(create: (_) => PokemonProvider())],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -12,11 +19,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Pokédex',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.redAccent),
-        useMaterial3: true,
-      ),
+      theme: ThemeData.dark(),
       home: const HomeScreen(),
     );
   }
