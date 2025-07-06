@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:projeto_ap2/screens/detail_screen.dart';
-import 'package:projeto_ap2/utils/pokemon_type_color.dart';
+import 'package:projeto_as/screens/detail_screen.dart';
+import 'package:projeto_as/utils/pokemon_type_color.dart';
 import '../../models/pokemon_model.dart';
 
 class PokemonDetailOverlay extends StatelessWidget {
@@ -69,9 +69,9 @@ class PokemonDetailOverlay extends StatelessWidget {
                                 transitionDuration: const Duration(
                                   milliseconds: 700,
                                 ),
-                                pageBuilder: (_, animation, __) =>
+                                pageBuilder: (_, animation, _) =>
                                     PokemonDetailPage(pokemon: pokemon),
-                                transitionsBuilder: (_, animation, __, child) {
+                                transitionsBuilder: (_, animation, _, child) {
                                   final rotate = Tween(begin: 1.0, end: 0.0)
                                       .animate(
                                         CurvedAnimation(

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:projeto_ap2/utils/pokemon_type_color.dart';
+import 'package:projeto_as/utils/pokemon_type_color.dart';
 
 class PokemonTypes extends StatelessWidget {
   final List types;

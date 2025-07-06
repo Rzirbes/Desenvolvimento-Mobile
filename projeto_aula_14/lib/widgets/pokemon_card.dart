@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:projeto_ap2/utils/pokemon_type_color.dart';
-import 'package:projeto_ap2/widgets/details_button.dart';
+import 'package:projeto_as/utils/pokemon_type_color.dart';
+import 'package:projeto_as/widgets/details_button.dart';
 import '../models/pokemon_model.dart';
 import 'pokemon_card/pokemon_image.dart';
 import 'pokemon_card/pokemon_name.dart';

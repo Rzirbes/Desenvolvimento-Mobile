@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:projeto_as/widgets/logout_menu_butto.dart';
 import 'package:provider/provider.dart';
 import '../providers/pokemon_provider.dart';
+import '../utils/pokemon_type_color.dart';
 import '../widgets/pokemon_card.dart';
 import '../widgets/search_field.dart';
 import '../widgets/pokemon_detail_overlay.dart';
@@ -26,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _searchController.addListener(() {
       Provider.of<PokemonProvider>(
         context,
-        listen: false, 
+        listen: false,
       ).searchPokemons(_searchController.text);
     });
   }
@@ -42,6 +44,28 @@ class _HomeScreenState extends State<HomeScreen> {
     final provider = Provider.of<PokemonProvider>(context);
 
     return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(kToolbarHeight),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 400),
+          decoration: provider.selectedPokemon != null
+              ? BoxDecoration(
+                  gradient: PokemonTypeColor.getGradient(
+                    provider.selectedPokemon!.types.first['type']['name'],
+                  ),
+                )
+              : BoxDecoration(
+                  color: Theme.of(context).appBarTheme.backgroundColor,
+                ),
+
+          child: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            title: const Text('Pokédex'),
+            actions: const [LogoutMenuButton()],
+          ),
+        ),
+      ),
       body: Stack(
         fit: StackFit.expand,
         children: [
@@ -49,26 +73,15 @@ class _HomeScreenState extends State<HomeScreen> {
           SafeArea(
             child: Column(
               children: [
-                AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 500),
-                  child: provider.selectedPokemon != null
-                      ? PokemonDetailOverlay(
-                          key: ValueKey(provider.selectedPokemon!.name),
-                          pokemon: provider.selectedPokemon!,
-                          onClose: provider.clearSelection,
-                        )
-                      : const Padding(
-                          padding: EdgeInsets.all(16),
-                          child: Text(
-                            'Pokédex',
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                ),
+                if (provider.selectedPokemon != null)
+                  AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 500),
+                    child: PokemonDetailOverlay(
+                      key: ValueKey(provider.selectedPokemon!.name),
+                      pokemon: provider.selectedPokemon!,
+                      onClose: provider.clearSelection,
+                    ),
+                  ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: SearchField(

@@ -3,7 +3,7 @@ import '../models/pokemon_model.dart';
 import '../services/poke_api_service.dart';
 
 class PokemonProvider extends ChangeNotifier {
-  List<Pokemon> _pokemons = [];
+  final List<Pokemon> _pokemons = [];
   List<Pokemon> _filteredPokemons = [];
   Pokemon? _selectedPokemon;
   int _offset = 0;
